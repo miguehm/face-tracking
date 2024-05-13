@@ -34,37 +34,5 @@ def send_coords(x_axis, y_axis):
     # Cierra la conexión
     arduino.close()
 
-    """
-    x_axis_negative = input("x_axis_negative: ")
-    x_axis = int(input("x_axis value: "))
-    y_axis_negative = input("y_axis_negative: ")
-    y_axis = int(input("y_axis value: "))
-
-    arduino.write(b'x')
-    if x_axis_negative == 'y':
-        arduino.write(b'n')
-
-    num_binary = bin(x_axis)[2:]  # Convert blink to binary
-    print(f"Binary value: {num_binary}")
-    arduino.write(num_binary.encode())  # Send binary value to Arduino
-
-    arduino.write(b'f')
-
-    arduino.write(b'y')
-    if y_axis_negative == 'y':
-        arduino.write(b'n')
-
-    num_binary = bin(y_axis)[2:]  # Convert blink to binary
-    print(f"Binary value: {num_binary}")
-    arduino.write(num_binary.encode())  # Send binary value to Arduino
-
-    arduino.write(b'f') # Send end of transmission
-
-    arduino.write(b'r') # coordinates ready
-
-    # Cierra la conexión
-    arduino.close()
-    """
-
 if __name__ == '__main__':
     send_coords(-11, 13)
