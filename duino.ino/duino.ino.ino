@@ -10,6 +10,7 @@ struct Coordinates {
 };
 
 Coordinates actualCoords;
+
 bool isX = 0;
 bool isY = 0;
 bool isNegative = 0;
@@ -19,7 +20,9 @@ void setup(){
   Serial.begin(9600);
   pinMode(pinLED, OUTPUT);
   digitalWrite(pinLED, LOW);
-  delay(1000);
+  //delay(1000);
+  actualCoords.x = 0;
+  actualCoords.y = 0;
 }
 
 void loop(){
@@ -60,8 +63,10 @@ void loop(){
         break;
       case 'r': // both axis ready to use
         // debug blinking
-        if(actualCoords.x == -372 && actualCoords.y == -146){
+        if(actualCoords.x < 0 && actualCoords.y < 0){
           digitalWrite(pinLED, HIGH);
+          //delay(3000);
+          /*
           delay(700);
           digitalWrite(pinLED, LOW);
           delay(400);
@@ -69,6 +74,10 @@ void loop(){
           delay(100);
           digitalWrite(pinLED, LOW);
           delay(100);
+          */
+        } else {
+          digitalWrite(pinLED, LOW);
+          //delay(3000);
         }
         break;
     }
