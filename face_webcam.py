@@ -16,7 +16,7 @@ def face_detection():
     arduino = serial.Serial("COM3", 9600)
     time.sleep(2)  # Espera a que el puerto serie esté listo
 
-    # Imprime el tamaño del canvas
+    # Imprime el tamaño del canvas (640x480)
     image_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     image_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     print(f"El tamaño del canvas es {image_width}x{image_height}")
@@ -33,7 +33,10 @@ def face_detection():
         ret, img = cap.read()
 
         # Espejamos la imagen en el eje Y
-        img = cv2.flip(img, 1)  # El segundo argumento es 1 para espejar horizontalmente
+        #img = cv2.flip(img, 1)  # El segundo argumento es 1 para espejar horizontalmente
+
+        # espejamos la imagen en el eje X
+        img = cv2.flip(img, 0)  # El segundo argumento es 0 para espejar verticalmente
 
         # dibujamos dos lineas que representen el eje x y el eje y de la imagen
         cv2.line(img, (0, image_center_y), (image_width, image_center_y), (0, 0, 255), 2)
