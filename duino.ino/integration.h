@@ -1,4 +1,4 @@
 // period is in milliseconds
-long integration(unsigned long period, long err){
-  return period*err;
+float integration(int period, int err){
+  return static_cast<float>(period)*err;
 }
