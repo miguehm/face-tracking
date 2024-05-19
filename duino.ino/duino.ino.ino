@@ -3,6 +3,10 @@
 
 const int pinLED = 13;
 
+// unsigned long to prevent time issues
+// millis() return unsigned long btw
+unsigned long time = 0;
+
 struct Coordinates {
   int x;
   int y;
@@ -23,6 +27,7 @@ void setup(){
   //delay(1000);
   actualCoords.x = 0;
   actualCoords.y = 0;
+  time = millis();
 }
 
 void loop(){
@@ -62,22 +67,28 @@ void loop(){
         isNegative = 0;
         break;
       case 'r': // both axis ready to use
-        // debug blinking
-        if(actualCoords.x < 0 && actualCoords.y < 0){
-          digitalWrite(pinLED, HIGH);
-          //delay(3000);
-          /*
-          delay(700);
-          digitalWrite(pinLED, LOW);
-          delay(400);
-          digitalWrite(pinLED, HIGH);
-          delay(100);
-          digitalWrite(pinLED, LOW);
-          delay(100);
-          */
-        } else {
-          digitalWrite(pinLED, LOW);
-          //delay(3000);
+        if(millis() >= time + 100){ // + period
+          time = millis();
+          // debug blinking
+          
+          if(actualCoords.x < 0 && actualCoords.y < 0){
+            digitalWrite(pinLED, HIGH);
+            //delay(3000);
+            /*
+            delay(700);
+            digitalWrite(pinLED, LOW);
+            delay(400);
+            digitalWrite(pinLED, HIGH);
+            delay(100);
+            digitalWrite(pinLED, LOW);
+            delay(100);
+            */
+          } else {
+            digitalWrite(pinLED, LOW);
+            //delay(3000);
+          }
+          //break;
+          
         }
         break;
     }
