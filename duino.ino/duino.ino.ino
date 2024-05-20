@@ -2,18 +2,22 @@
 #include "derivation.h"
 #include <Servo.h>
 
+//debug
 const int pinLED = 13;
+
+// servos
 Servo servoX;
+Servo servoY;
 
 // unsigned long to prevent time issues
 // millis() return unsigned long btw
 unsigned long time = 0;
-int period = 30;
+int period = 50;
 
 struct Coordinates {
   int x;
   int y;
-  bool ready; //is useful??
+  //bool ready; //is useful??
 };
 
 Coordinates actualCoords;
@@ -23,30 +27,49 @@ bool isY = 0;
 bool isNegative = 0;
 int num = 0;
 
-// PID variables
+// PID variables X axis
 int actual_err_x = 0;
 int prev_err_x = 0;
 
-float kp = 0.25;
-float ki = 0.5;
-float kd = 0.5;
+float xkp = 0.25; // 0.25
+float xki = 0.5; //0.5
+float xkd = 0.5; //0.5
 
-float PID_p = 0;
-float PID_i = 0;
-float PID_d = 0;
+float xPID_p = 0;
+float xPID_i = 0;
+float xPID_d = 0;
 
-float PID_total = 0;
+float xPID_total = 0;
+
+// PID variables Y axis
+int actual_err_y = 0;
+int prev_err_y = 0;
+
+float ykp = 0.06; // 0.06
+float yki = 0.1; // 0.1
+float ykd = 0.1; // 0.7
+
+float yPID_p = 0;
+float yPID_i = 0;
+float yPID_d = 0;
+
+float yPID_total = 0;
 
 void setup(){
   Serial.begin(9600);
+  
   servoX.attach(2);
+  servoY.attach(3);
+
   pinMode(pinLED, OUTPUT);
   digitalWrite(pinLED, LOW);
   //delay(1000);
   actualCoords.x = 0;
   actualCoords.y = 0;
   time = millis();
+
   servoX.write(90);
+  servoY.write(90);
 }
 
 void loop(){
@@ -89,20 +112,44 @@ void loop(){
         if(millis() > 4000){
           if(millis() >= time + period){ // + period
             time = millis();
-            // debug blinking
-
+            
             actual_err_x = actualCoords.x;
 
-            PID_p = kp * actual_err_x;
-            PID_d = kd * derivation(period, actual_err_x, prev_err_x);
-            PID_i = PID_i + (ki * integration(period, actual_err_x));
+            xPID_p = xkp * actual_err_x;
+            xPID_d = xkd * derivation(period, actual_err_x, prev_err_x);
+            //if (-200 < actual_err_x && actual_err_x < 200){
+              xPID_i = xPID_i + (xki * integration(period, actual_err_x));
+            //} else {
+              //xPID_i = 0;
+            //}
 
-            PID_total = PID_p + PID_i + PID_d;
+            xPID_total = xPID_p + xPID_i + xPID_d;
 
-            servoX.write(map(-PID_total, -320, 320, 0, 180));
+            servoX.write(map(-xPID_total, -320, 320, 0, 180));
 
             prev_err_x = actual_err_x;
+            
+            
+            //=========================
+            if (millis() > 20000){
+              actual_err_y = actualCoords.y;
 
+              yPID_p = ykp * actual_err_y;
+              yPID_d = ykd * derivation(period, actual_err_y, prev_err_y);
+
+              //if (-120 > actual_err_y && actual_err_y < 120){
+                yPID_i = yPID_i + (yki * integration(period, actual_err_y));
+              //} else {
+                //yPID_i = 0;
+              //}
+
+              yPID_total = yPID_p + yPID_i + yPID_d;
+
+              servoY.write(map(yPID_total, -240, 240, 60, 140));
+
+              prev_err_y = actual_err_y;
+            }
+            
             /*
             if(actualCoords.x < 0 && actualCoords.y < 0){
               digitalWrite(pinLED, HIGH);
