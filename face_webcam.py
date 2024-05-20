@@ -36,7 +36,7 @@ def face_detection():
         #img = cv2.flip(img, 1)  # El segundo argumento es 1 para espejar horizontalmente
 
         # espejamos la imagen en el eje X
-        img = cv2.flip(img, 0)  # El segundo argumento es 0 para espejar verticalmente
+        img = cv2.flip(img, 1)  # El segundo argumento es 0 para espejar verticalmente
 
         # dibujamos dos lineas que representen el eje x y el eje y de la imagen
         cv2.line(img, (0, image_center_y), (image_width, image_center_y), (0, 0, 255), 2)

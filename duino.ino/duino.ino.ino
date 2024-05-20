@@ -86,42 +86,44 @@ void loop(){
         isNegative = 0;
         break;
       case 'r': // both axis ready to use
-        if(millis() >= time + period){ // + period
-          time = millis();
-          // debug blinking
+        if(millis() > 4000){
+          if(millis() >= time + period){ // + period
+            time = millis();
+            // debug blinking
 
-          actual_err_x = actualCoords.x;
+            actual_err_x = actualCoords.x;
 
-          PID_p = kp * actual_err_x;
-          PID_d = kd * derivation(period, actual_err_x, prev_err_x);
-          PID_i = PID_i + (ki * integration(period, actual_err_x));
+            PID_p = kp * actual_err_x;
+            PID_d = kd * derivation(period, actual_err_x, prev_err_x);
+            PID_i = PID_i + (ki * integration(period, actual_err_x));
 
-          PID_total = PID_p + PID_i + PID_d;
+            PID_total = PID_p + PID_i + PID_d;
 
-          servoX.write(map(-PID_total, -320, 320, 0, 180));
+            servoX.write(map(-PID_total, -320, 320, 0, 180));
 
-          prev_err_x = actual_err_x;
+            prev_err_x = actual_err_x;
 
-          /*
-          if(actualCoords.x < 0 && actualCoords.y < 0){
-            digitalWrite(pinLED, HIGH);
-            //delay(3000);
-            //
-            delay(700);
-            digitalWrite(pinLED, LOW);
-            delay(400);
-            digitalWrite(pinLED, HIGH);
-            delay(100);
-            digitalWrite(pinLED, LOW);
-            delay(100);
-            //
-          } else {
-            digitalWrite(pinLED, LOW);
-            //delay(3000);
+            /*
+            if(actualCoords.x < 0 && actualCoords.y < 0){
+              digitalWrite(pinLED, HIGH);
+              //delay(3000);
+              //
+              delay(700);
+              digitalWrite(pinLED, LOW);
+              delay(400);
+              digitalWrite(pinLED, HIGH);
+              delay(100);
+              digitalWrite(pinLED, LOW);
+              delay(100);
+              //
+            } else {
+              digitalWrite(pinLED, LOW);
+              //delay(3000);
+            }
+            */
+            //break;
+            
           }
-          */
-          //break;
-          
         }
         break;
     }
