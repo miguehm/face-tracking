@@ -13,7 +13,7 @@ def face_detection():
 
     # Abre la conexión con el Arduino
     print("Abriendo conexión con el Arduino...")
-    arduino = serial.Serial("COM3", 9600)
+    arduino = serial.Serial("COM5", 9600)
     time.sleep(2)  # Espera a que el puerto serie esté listo
 
     # Imprime el tamaño del canvas (640x480)

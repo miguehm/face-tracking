@@ -36,7 +36,7 @@ float xki = 0.5; //0.5
 float xkd = 0.5; //0.5
 
 float xPID_p = 0;
-float xPID_i = 0;
+float xPID_i = -100;
 float xPID_d = 0;
 
 float xPID_total = 0;
@@ -109,7 +109,7 @@ void loop(){
         isNegative = 0;
         break;
       case 'r': // both axis ready to use
-        if(millis() > 4000){
+        if(millis() > 2000){
           if(millis() >= time + period){ // + period
             time = millis();
             
